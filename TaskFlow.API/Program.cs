@@ -2,8 +2,11 @@
 
 using TaskFlow.Infrastructure.Extensions;
 using TaskFlow.Application.Extensions;
+using TaskFlow.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configurar o Serilog usando a extensão
+builder.Host.UseSerilogLogging();
 // Registrar o MediatR e os casos de uso
 
 // Registrar os serviços do MediatR
