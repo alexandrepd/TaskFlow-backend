@@ -3,6 +3,10 @@
 using TaskFlow.Infrastructure.Extensions;
 using TaskFlow.Application.Extensions;
 using TaskFlow.API.Extensions;
+using TaskFlow.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Configurar o Serilog usando a extensão
@@ -12,6 +16,9 @@ builder.Host.UseSerilogLogging();
 // Registrar os serviços do MediatR
 builder.Services.AddMediatorServices();
 
+// Registrar os handlers do MediatR
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -19,8 +26,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Registrar serviços da camada de Infrastructure
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddControllers();
+
 
 var app = builder.Build();
 app.MapControllers();
