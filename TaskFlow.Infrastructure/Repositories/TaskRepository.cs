@@ -16,7 +16,9 @@ namespace TaskFlow.Infrastructure.Repositories
 
         public async Task<IEnumerable<TaskItem>> GetAllAsync()
         {
-            return await _context.Set<TaskItem>().ToListAsync();
+            return await _context.Set<TaskItem>()
+                                  .OrderBy(task => task.CreatedAt)
+                                  .ToListAsync();
         }
 
         public async Task<TaskItem> GetByIdAsync(Guid id)
