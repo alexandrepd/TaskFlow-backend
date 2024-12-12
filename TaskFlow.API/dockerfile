@@ -20,5 +20,5 @@ WORKDIR /app
 COPY --from=build /app/out ./
 
 # Expose the API port
-EXPOSE 5000
+EXPOSE 5001
 ENTRYPOINT ["dotnet", "TaskFlow.API.dll"]

@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  backend:
+    image: taskflow-backend
+    build:
+      context: .
+      dockerfile: TaskFlow.API/Dockerfile
+    ports:
+      - "5001:5000"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TaskFlowDb;User Id=sa;Password=YourStrong@Password;
+
+  frontend:
+    image: taskflow-frontend
+    build:
+      context: /Users/alexandreoliveira/development/projectsJavaScript/taskflow-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskflow-db
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Password
+    volumes:
+      - sql_data:/var/opt/mssql
+
+volumes:
+  sql_data:
