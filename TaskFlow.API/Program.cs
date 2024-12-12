@@ -1,10 +1,6 @@
-
-
 using TaskFlow.Infrastructure.Extensions;
 using TaskFlow.Application.Extensions;
 using TaskFlow.API.Extensions;
-using TaskFlow.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using MediatR;
 using System.Reflection;
 
@@ -29,6 +25,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddControllers();
 
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -42,17 +40,18 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// // Configure the HTTP request pipeline.
+// if (app.Environment.IsDevelopment())
+// {
+app.UseSwagger();
+app.UseSwaggerUI();
+// }
 
 app.UseHttpsRedirection();
-
 
 app.Run();
