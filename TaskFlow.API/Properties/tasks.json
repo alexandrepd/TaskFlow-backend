@@ -1,0 +1,14 @@
+{
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/TaskFlow.API/TaskFlow.API.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
