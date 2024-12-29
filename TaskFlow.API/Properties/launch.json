@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "coreclr",
+            "request": "launch",
+            "name": "Launch TaskFlow.API",
+            "program": "${workspaceFolder}/TaskFlow.API/bin/Debug/net8.0/TaskFlow.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/TaskFlow.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "preLaunchTask": "build"
+        }
+    ],
+    "inputs": [
+        {
+            "type": "promptString",
+            "id": "programPath",
+            "description": "Path to your program"
+        }
+    ]
+}
