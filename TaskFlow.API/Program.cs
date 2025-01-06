@@ -4,8 +4,15 @@ using TaskFlow.API.Extensions;
 using MediatR;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using TaskFlow.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+
 // Configurar o Serilog usando a extensão
 builder.Host.UseSerilogLogging();
 // Registrar o MediatR e os casos de uso
@@ -72,7 +79,14 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.ClearProviders();
+
 var app = builder.Build();
+
+// Inicializar o banco de dados
+DatabaseInitializer.Initialize(app.Services);
 
 app.UseCors();
 app.UseAuthentication();
