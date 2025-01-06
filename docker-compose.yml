@@ -4,14 +4,15 @@ services:
     image: taskflow-backend
     build:
       context: .
-      dockerfile: TaskFlow.API/Dockerfile
+      dockerfile: Dockerfile
     ports:
-      - "5001:5000"
+      - "4000:8080"
     depends_on:
       - db
     environment:
+      - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=TaskFlowDb;User Id=sa;Password=YourStrong@Password;
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TaskFlowDb;User Id=sa;Password=YourStrong@Password;;Encrypt=false;TrustServerCertificate=True;
 
   frontend:
     image: taskflow-frontend

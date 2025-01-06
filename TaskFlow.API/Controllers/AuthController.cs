@@ -9,10 +9,12 @@ namespace TaskFlow.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly ILogger<AuthController> _logger;
 
-    public AuthController(IMediator mediator)
+    public AuthController(IMediator mediator, ILogger<AuthController> logger)
     {
         _mediator = mediator;
+        _logger = logger;
     }
 
     [HttpPost("login")]
@@ -29,7 +31,7 @@ public class AuthController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Log the exception (ex) here if needed
+            _logger.LogError(ex, "An unexpected error occurred during login.");
             return StatusCode(500, "An unexpected error occurred.");
         }
     }
