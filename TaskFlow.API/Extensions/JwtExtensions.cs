@@ -8,8 +8,8 @@ public static class JwtExtensions
 {
     public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        string jwtKey = configuration["Jwt:Key"];
-        string jwtIssuer = configuration["Jwt:Issuer"];
+        string jwtKey = configuration["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key not found in configuration");
+        string jwtIssuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer not found in configuration");
 
         services.AddAuthentication(options =>
         {
