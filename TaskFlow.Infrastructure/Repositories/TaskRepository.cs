@@ -14,14 +14,15 @@ namespace TaskFlow.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TaskItem>> GetAllAsync()
+        public async Task<IEnumerable<TaskItem>> GetAllByUserIdAsync(Guid userId)
         {
             return await _context.Set<TaskItem>()
-                                  .OrderBy(task => task.CreatedAt)
+                                  .Where(t => t.UserId == userId)
+                                  .OrderBy(t => t.CreatedAt)
                                   .ToListAsync();
         }
 
-        public async Task<TaskItem> GetByIdAsync(Guid id)
+        public async Task<TaskItem?> GetByIdAsync(Guid id)
         {
             return await _context.Set<TaskItem>().FindAsync(id);
         }
