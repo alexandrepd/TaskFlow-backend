@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   backend:
     image: taskflow-backend
@@ -12,13 +11,19 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=TaskFlowDb;User Id=sa;Password=YourStrong@Password;;Encrypt=false;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TaskFlowDb;User Id=sa;Password=YourStrong@Password;Encrypt=false;TrustServerCertificate=True;
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__Issuer=${JWT_ISSUER:-TaskFlow}
+      - Jwt__ExpireDays=${JWT_EXPIRE_DAYS:-1}
+      - TASKFLOW_ADMIN_PASSWORD=${TASKFLOW_ADMIN_PASSWORD}
 
   frontend:
     image: taskflow-frontend
     build:
-      context: /Users/alexandreoliveira/development/projectsJavaScript/taskflow-frontend
+      context: ../../projectsJavaScript/taskflow-frontend
       dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: http://localhost:4000/api
     ports:
       - "3000:80"
     depends_on:
