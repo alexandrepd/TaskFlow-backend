@@ -1,4 +1,5 @@
 using MediatR;
+using TaskFlow.Application.Common.Exceptions;
 using TaskFlow.Application.Features.Tasks.Commands;
 using TaskFlow.Domain.Interfaces;
 
@@ -15,15 +16,13 @@ public class DeleteTaskHandler : IRequestHandler<DeleteTaskCommand>
 
     public async Task<Unit> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
     {
-        // Fetch the task from the repository
         var task = await _taskRepository.GetByIdAsync(request.Id);
-        if (task == null)
-            throw new KeyNotFoundException("Task not found.");
 
-        // Delete the task
+        if (task is null || task.UserId != request.UserId)
+            throw new NotFoundException("Task", request.Id);
+
         await _taskRepository.DeleteAsync(request.Id);
-
-        return Unit.Value; // Signal that the command has been handled
+        return Unit.Value;
     }
 }
 

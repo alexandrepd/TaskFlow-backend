@@ -1,11 +1,11 @@
 using MediatR;
-using TaskFlow.Domain.Entities;
+using TaskFlow.Application.Features.Tasks.DTOs;
 using TaskFlow.Domain.Interfaces;
 using TaskFlow.Application.Features.Tasks.Queries;
 
 namespace TaskFlow.Application.Features.Tasks.Queries;
 
-public class GetTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumerable<TaskItem>>
+public class GetTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumerable<TaskResponse>>
 {
     private readonly ITaskRepository _repository;
 
@@ -14,9 +14,20 @@ public class GetTasksQueryHandler : IRequestHandler<GetAllTasksQuery, IEnumerabl
         _repository = repository;
     }
 
-    public async Task<IEnumerable<TaskItem>> Handle(GetAllTasksQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TaskResponse>> Handle(GetAllTasksQuery request, CancellationToken cancellationToken)
     {
-        return await _repository.GetAllAsync();
+        var tasks = await _repository.GetAllByUserIdAsync(request.UserId);
+        return tasks.Select(t => new TaskResponse
+        {
+            Id = t.Id,
+            Title = t.Title,
+            Description = t.Description,
+            Category = t.Category,
+            Priority = t.Priority,
+            Status = t.Status,
+            CreatedAt = t.CreatedAt,
+            CompletedAt = t.CompletedAt
+        });
     }
 }
 

@@ -19,6 +19,7 @@ public class CreateTaskHandler : IRequestHandler<CreateTaskCommand, Guid>
         var task = new TaskItem
         {
             Id = Guid.NewGuid(),
+            UserId = request.UserId,
             Title = request.Title,
             Description = request.Description,
             Category = request.Category,
