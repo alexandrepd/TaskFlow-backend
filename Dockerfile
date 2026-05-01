@@ -21,9 +21,8 @@ COPY --from=build /app/out ./
 
 # Definir variáveis de ambiente
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_URLS=http://+:8080
 
-# Expose the API port
-# EXPOSE 5000
-# EXPOSE 5001
+# Expose the API port used by docker-compose
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "TaskFlow.API.dll"]
